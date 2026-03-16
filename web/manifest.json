@@ -1,11 +1,11 @@
 {
-    "name": "portfolio_app",
-    "short_name": "portfolio_app",
+    "name": "Mihir Bhojani — Flutter Developer",
+    "short_name": "Mihir.dev",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0A1628",
+    "theme_color": "#00B4D8",
+    "description": "Mihir Bhojani — Senior Mobile App Developer | Flutter, Dart, Swift",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
