@@ -1,0 +1,347 @@
+class SkillCard {
+  final String icon;
+  final String title;
+  final List<String> tags;
+
+  const SkillCard({
+    required this.icon,
+    required this.title,
+    required this.tags,
+  });
+}
+
+class Project {
+  final String domain;
+  final DomainType domainType;
+  final String platform;
+  final String title;
+  final String description;
+  final List<String> tech;
+  final List<ProjectMetric> metrics;
+  final String? appStoreUrl;
+  final String? playStoreUrl;
+
+  const Project({
+    required this.domain,
+    required this.domainType,
+    required this.platform,
+    required this.title,
+    required this.description,
+    required this.tech,
+    required this.metrics,
+    this.appStoreUrl,
+    this.playStoreUrl,
+  });
+}
+
+enum DomainType { fintech, health, social, enterprise, travel, education }
+
+class ProjectMetric {
+  final String value;
+  final String label;
+
+  const ProjectMetric(this.value, this.label);
+}
+
+class Experience {
+  final String period;
+  final String badge;
+  final String role;
+  final String company;
+  final List<String> points;
+
+  const Experience({
+    required this.period,
+    required this.badge,
+    required this.role,
+    required this.company,
+    required this.points,
+  });
+}
+
+class Testimonial {
+  final String quote;
+  final String name;
+  final String role;
+  final String initials;
+
+  const Testimonial({
+    required this.quote,
+    required this.name,
+    required this.role,
+    required this.initials,
+  });
+}
+
+// ── DATA ──────────────────────────────────────────────────────────────────
+
+final List<SkillCard> skillCards = [
+  const SkillCard(
+    icon: '📱',
+    title: 'Mobile Development',
+    tags: ['Flutter', 'Dart', 'Swift', 'Kotlin', 'Java', 'iOS', 'Android'],
+  ),
+  const SkillCard(
+    icon: '🌐',
+    title: 'Flutter Web',
+    tags: ['Flutter Web', 'Responsive UI', 'Animations', 'Web Sockets'],
+  ),
+  const SkillCard(
+    icon: '🏗️',
+    title: 'Architecture & State',
+    tags: ['BLoC', 'Provider', 'GetX', 'MVC', 'MVVM', 'Clean Architecture'],
+  ),
+  const SkillCard(
+    icon: '🔥',
+    title: 'Firebase & Backend',
+    tags: [
+      'Cloud Firestore',
+      'FCM',
+      'Crashlytics',
+      'Remote Config',
+      'REST APIs',
+      'MySQL',
+      'SQLite',
+    ],
+  ),
+  const SkillCard(
+    icon: '💳',
+    title: 'SDKs & Integrations',
+    tags: [
+      'Stripe SDK',
+      'Sentry SDK',
+      'Auth0 SDK',
+      'Google Maps SDK',
+      'Flutter Charts',
+    ],
+  ),
+  const SkillCard(
+    icon: '🚀',
+    title: 'DevOps & CI/CD',
+    tags: [
+      'GitHub Actions',
+      'CodeMagic',
+      'App Store',
+      'Play Store',
+      'GIT',
+      'JIRA',
+      'ClickUp',
+    ],
+  ),
+];
+
+final List<Project> projects = [
+  const Project(
+    domain: 'Education',
+    domainType: DomainType.education,
+    platform: '📱 iOS & Android',
+    title: 'Digital Regenesys Education',
+    description:
+        'Comprehensive mobile learning companion enabling seamless access to live classes, quizzes, session recordings, and progress tracking. Implemented user-focused features for flexible, interactive, and personalized learning.',
+    tech: ['Flutter', 'Dart', 'Firebase', 'REST API', 'BLoC'],
+    metrics: [
+      ProjectMetric('Live', 'Classes'),
+      ProjectMetric('Quiz', 'Engine'),
+      ProjectMetric('Track', 'Progress'),
+    ],
+    appStoreUrl:
+        'https://apps.apple.com/in/app/digital-regenesys-education/id6740993018',
+    playStoreUrl:
+        'https://play.google.com/store/apps/details?id=com.digitalregenesys.app',
+  ),
+  const Project(
+    domain: 'Travel',
+    domainType: DomainType.travel,
+    platform: '📱 iOS & Android',
+    title: 'Trip Attendynt',
+    description:
+        'Travel assistant app enabling seamless trip management with features like airport pickups, curated sightseeing, and personalised shopping. Integrated real-time updates and personalised assistance for a comprehensive travel companion.',
+    tech: ['Flutter', 'Dart', 'Google Maps', 'REST API', 'Firebase'],
+    metrics: [
+      ProjectMetric('Real-time', 'Updates'),
+      ProjectMetric('Curated', 'Trips'),
+      ProjectMetric('Custom', 'Itinerary'),
+    ],
+    appStoreUrl: 'https://apps.apple.com/in/app/tripattendynt/id6670303549',
+    playStoreUrl:
+        'https://play.google.com/store/apps/details?id=com.trip.attendynt',
+  ),
+  const Project(
+    domain: 'AI / Crypto',
+    domainType: DomainType.fintech,
+    platform: '📱 Mobile App',
+    title: 'Ailtra — AI-Powered Crypto Bot',
+    description:
+        'AI-powered cryptocurrency trading bot leveraging advanced algorithms to make real-time buy/sell decisions, achieving a 98.5% success rate in profit generation. Enhanced reliability through continuous improvements for consistent, trustworthy performance.',
+    tech: ['Flutter', 'Dart', 'AI/ML', 'WebSocket', 'REST API', 'BLoC'],
+    metrics: [
+      ProjectMetric('98.5%', 'Success Rate'),
+      ProjectMetric('Real-time', 'Trading'),
+      ProjectMetric('AI', 'Powered'),
+    ],
+  ),
+  const Project(
+    domain: 'E-commerce',
+    domainType: DomainType.enterprise,
+    platform: '📱 iOS & Android',
+    title: 'Teustar App',
+    description:
+        'Browse through local store promotions, coupons, and discounts, and conveniently make purchases from nearby businesses. Promotes eco-friendly practices by minimizing consumption of traditional paper fliers and coupons.',
+    tech: ['Flutter', 'Dart', 'Firebase', 'REST API', 'Google Maps'],
+    metrics: [
+      ProjectMetric('Local', 'Deals'),
+      ProjectMetric('Eco', 'Friendly'),
+      ProjectMetric('Nearby', 'Stores'),
+    ],
+    appStoreUrl: 'https://apps.apple.com/in/app/teustar/id1627667445',
+    playStoreUrl:
+        'https://play.google.com/store/apps/details?id=com.teustar.teustar',
+  ),
+  const Project(
+    domain: 'Social',
+    domainType: DomainType.social,
+    platform: '📱 iOS & Android',
+    title: 'Mangalya Jodi',
+    description:
+        'Versatile matchmaking app designed for various groups of people seeking life partners. Offers a platform to connect individuals through detailed profiles, preferences, and smart matching algorithms.',
+    tech: ['Flutter', 'Dart', 'Firebase', 'REST API', 'Provider'],
+    metrics: [
+      ProjectMetric('Smart', 'Matching'),
+      ProjectMetric('Profile', 'Verified'),
+      ProjectMetric('Secure', 'Chat'),
+    ],
+    appStoreUrl: 'https://apps.apple.com/in/app/mangalya-jodi/id6443634966',
+    playStoreUrl:
+        'https://play.google.com/store/apps/details?id=com.app.mangalyajodi',
+  ),
+  const Project(
+    domain: 'Healthcare',
+    domainType: DomainType.health,
+    platform: '📱 iOS & Android',
+    title: 'InjuryTrak',
+    description:
+        'Real-time injury data collection and tracking platform for businesses. Effortlessly access real-time information delivered directly to mobile devices, eliminating delays and ensuring you stay ahead of the competition.',
+    tech: ['Flutter', 'Dart', 'REST API', 'Firebase', 'SQLite'],
+    metrics: [
+      ProjectMetric('Real-time', 'Data'),
+      ProjectMetric('Mobile', 'First'),
+      ProjectMetric('Business', 'Ready'),
+    ],
+    appStoreUrl: 'https://apps.apple.com/in/app/injurytrak-v2/id6449781011',
+    playStoreUrl:
+        'https://play.google.com/store/apps/details?id=com.chirotrack.injurytrak',
+  ),
+  const Project(
+    domain: 'Property',
+    domainType: DomainType.enterprise,
+    platform: '📱 iOS & Android',
+    title: 'Teustar Property Management',
+    description:
+        'Streamlined property management platform facilitating efficient communication and connecting stakeholders for prompt action. Contributes to environmental sustainability by diminishing reliance on paper-based communication.',
+    tech: ['Flutter', 'Dart', 'Firebase', 'REST API', 'Google Maps'],
+    metrics: [
+      ProjectMetric('Eco', 'Friendly'),
+      ProjectMetric('Multi', 'Tenant'),
+      ProjectMetric('Revenue', 'Driven'),
+    ],
+    appStoreUrl:
+        'https://apps.apple.com/in/app/teustar-property-management/id1667314435',
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.teustarpm',
+  ),
+  const Project(
+    domain: 'Business',
+    domainType: DomainType.enterprise,
+    platform: '📱 iOS & Android',
+    title: 'Teustar Business Account',
+    description:
+        'Businesses engage nearby customers through tailored discounts, promotions, coupons, and notifications within a 10 km radius. Eco-friendly approach replacing traditional paper ads with convenient digital offers accessible in the app.',
+    tech: ['Flutter', 'Dart', 'Firebase', 'REST API', 'Geolocation'],
+    metrics: [
+      ProjectMetric('10km', 'Radius'),
+      ProjectMetric('Digital', 'Coupons'),
+      ProjectMetric('Geo', 'Targeted'),
+    ],
+    appStoreUrl:
+        'https://apps.apple.com/in/app/teustar-business-account/id1639046086',
+    playStoreUrl:
+        'https://play.google.com/store/apps/details?id=com.epistlz.epistlz_tab',
+  ),
+];
+
+final List<Experience> experiences = [
+  const Experience(
+    period: 'Mar 2025 — Present',
+    badge: 'Current',
+    role: 'Flutter App Developer',
+    company: 'Regenesys Education',
+    points: [
+      'Resolved bugs and issues in existing applications through debugging techniques.',
+      'Improved and corrected existing software and system applications.',
+      'Analyzed user needs and software requirements to determine design feasibility.',
+    ],
+  ),
+  const Experience(
+    period: 'Jan 2023 — Feb 2025',
+    badge: 'Full-Time',
+    role: 'Flutter App Developer',
+    company: 'Onviqa PVT LTD',
+    points: [
+      'Collaborated with cross-functional teams, including backend developers, to translate project requirements into elegant and efficient Flutter app solutions.',
+      'Stayed updated on the latest Flutter trends, best practices, and emerging technologies, and actively contributed to the continuous improvement of the development processes and codebase.',
+    ],
+  ),
+  const Experience(
+    period: 'Oct 2021 — Nov 2022',
+    badge: 'Full-Time',
+    role: 'Flutter App Developer',
+    company: 'Koolmind TechnoLab LLP',
+    points: [
+      'Developed user-friendly applications with a strong understanding of design fundamentals.',
+      'Conducted code reviews and provided feedback to improve code quality and maintainability.',
+    ],
+  ),
+  const Experience(
+    period: 'Jan 2021 — Jun 2021',
+    badge: 'Training',
+    role: 'Flutter App Developer (Training)',
+    company: 'FreshCodes Technology',
+    points: [
+      'Completed intensive Flutter & Dart development training program.',
+      'Built hands-on projects covering state management, REST API integration, and Firebase.',
+    ],
+  ),
+  const Experience(
+    period: 'May 2020 — Dec 2020',
+    badge: 'Training',
+    role: 'Android App Developer (Training)',
+    company: 'The Creative Concept',
+    points: [
+      'Gained foundational experience in Android development with Java and Kotlin.',
+      'Learned core concepts of mobile UI design and application lifecycle management.',
+    ],
+  ),
+];
+
+final List<Testimonial> testimonials = [
+  const Testimonial(
+    quote:
+        'Mihir delivered our education platform with exceptional attention to detail. His Flutter expertise and clean architecture made the codebase highly maintainable. The app handles live classes and quizzes flawlessly.',
+    name: 'Regenesys Team',
+    role: 'Product Lead · Regenesys Education',
+    initials: 'RE',
+  ),
+  const Testimonial(
+    quote:
+        'Working with Mihir on the Trip Attendynt app was a great experience. He integrated complex features like real-time updates and curated travel itineraries seamlessly. Highly professional and reliable developer.',
+    name: 'Onviqa Team',
+    role: 'Project Manager · Onviqa PVT LTD',
+    initials: 'OT',
+  ),
+  const Testimonial(
+    quote:
+        'Mihir brought deep Flutter expertise to our Teustar ecosystem of apps. From property management to business accounts, he consistently delivered high-quality, scalable mobile solutions on time.',
+    name: 'Koolmind Team',
+    role: 'Tech Lead · Koolmind TechnoLab',
+    initials: 'KT',
+  ),
+];
