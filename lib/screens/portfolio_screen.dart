@@ -17,6 +17,7 @@ class PortfolioScreen extends StatefulWidget {
 class _PortfolioScreenState extends State<PortfolioScreen> {
   final ScrollController _scrollController = ScrollController();
 
+  final _aboutKey = GlobalKey();
   final _skillsKey = GlobalKey();
   final _projectsKey = GlobalKey();
   final _experienceKey = GlobalKey();
@@ -27,8 +28,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     final ctx = key.currentContext;
     if (ctx != null) {
       Scrollable.ensureVisible(ctx,
-          duration: const Duration(milliseconds: 700),
-          curve: Curves.easeInOut);
+          duration: const Duration(milliseconds: 700), curve: Curves.easeInOut);
     }
   }
 
@@ -53,6 +53,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                   onViewWork: () => _scrollTo(_projectsKey),
                   onContact: () => _scrollTo(_contactKey),
                 ),
+                _AboutSection(
+                    key: _aboutKey, onHire: () => _scrollTo(_contactKey)),
                 _SkillsSection(key: _skillsKey),
                 _ProjectsSection(key: _projectsKey),
                 _ExperienceSection(key: _experienceKey),
@@ -66,6 +68,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
             ),
           ),
           _NavBar(
+            onAbout: () => _scrollTo(_aboutKey),
             onSkills: () => _scrollTo(_skillsKey),
             onProjects: () => _scrollTo(_projectsKey),
             onExperience: () => _scrollTo(_experienceKey),
@@ -80,7 +83,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
 
 // ── HELPERS ───────────────────────────────────────────────────────────────
 
-double _hPad(double w) => w >= AppTheme.bpTablet ? 60 : (w >= AppTheme.bpMobile ? 40 : 20);
+double _hPad(double w) =>
+    w >= AppTheme.bpTablet ? 60 : (w >= AppTheme.bpMobile ? 40 : 20);
 
 EdgeInsets _sectionPadding(double w) => EdgeInsets.symmetric(
       horizontal: _hPad(w),
@@ -138,6 +142,7 @@ class _ResponsiveGrid extends StatelessWidget {
 // ── NAV BAR ───────────────────────────────────────────────────────────────
 
 class _NavBar extends StatelessWidget {
+  final VoidCallback onAbout;
   final VoidCallback onSkills;
   final VoidCallback onProjects;
   final VoidCallback onExperience;
@@ -145,6 +150,7 @@ class _NavBar extends StatelessWidget {
   final VoidCallback onHire;
 
   const _NavBar({
+    required this.onAbout,
     required this.onSkills,
     required this.onProjects,
     required this.onExperience,
@@ -169,40 +175,42 @@ class _NavBar extends StatelessWidget {
       child: _contentBox(
         child: Row(
           children: [
-            // Logo
             RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Mihir',
-                    style: AppTheme.playfair(size: 18, color: AppTheme.teal),
+                    text: 'M',
+                    style: AppTheme.playfair(size: 20, color: AppTheme.teal),
                   ),
                   TextSpan(
-                    text: '.',
-                    style: AppTheme.playfair(size: 18, color: AppTheme.gold),
+                    text: '/',
+                    style: AppTheme.playfair(size: 20, color: AppTheme.gold),
                   ),
                   TextSpan(
-                    text: 'Bhojani',
-                    style: AppTheme.playfair(size: 18, color: AppTheme.teal),
+                    text: 'B',
+                    style: AppTheme.playfair(size: 20, color: AppTheme.teal),
                   ),
                 ],
               ),
             ),
             const Spacer(),
             if (showFullNav) ...[
-              NavLink(label: 'Skills', onTap: onSkills),
-              const SizedBox(width: 32),
-              NavLink(label: 'Projects', onTap: onProjects),
-              const SizedBox(width: 32),
-              NavLink(label: 'Experience', onTap: onExperience),
-              const SizedBox(width: 32),
-              NavLink(label: 'Reviews', onTap: onTestimonials),
-              const SizedBox(width: 32),
+              NavLink(label: 'About', onTap: onAbout),
+              const SizedBox(width: 28),
+              NavLink(label: 'Services', onTap: onSkills),
+              const SizedBox(width: 28),
+              NavLink(label: 'Portfolio', onTap: onProjects),
+              const SizedBox(width: 28),
+              NavLink(label: 'Testimonial', onTap: onTestimonials),
+              const SizedBox(width: 28),
+              NavLink(label: 'Contact', onTap: onHire),
+              const SizedBox(width: 28),
               NavLink(label: 'Hire Me', onTap: onHire, isCta: true),
             ] else ...[
               NavLink(label: 'Hire Me', onTap: onHire, isCta: true),
               const SizedBox(width: 8),
               _MobileMenuButton(
+                onAbout: onAbout,
                 onSkills: onSkills,
                 onProjects: onProjects,
                 onExperience: onExperience,
@@ -218,6 +226,7 @@ class _NavBar extends StatelessWidget {
 }
 
 class _MobileMenuButton extends StatelessWidget {
+  final VoidCallback onAbout;
   final VoidCallback onSkills;
   final VoidCallback onProjects;
   final VoidCallback onExperience;
@@ -225,6 +234,7 @@ class _MobileMenuButton extends StatelessWidget {
   final VoidCallback onHire;
 
   const _MobileMenuButton({
+    required this.onAbout,
     required this.onSkills,
     required this.onProjects,
     required this.onExperience,
@@ -244,24 +254,27 @@ class _MobileMenuButton extends StatelessWidget {
       offset: const Offset(0, 48),
       onSelected: (value) {
         switch (value) {
-          case 'skills':
+          case 'about':
+            onAbout();
+          case 'services':
             onSkills();
-          case 'projects':
+          case 'portfolio':
             onProjects();
           case 'experience':
             onExperience();
-          case 'reviews':
+          case 'testimonial':
             onTestimonials();
-          case 'hire':
+          case 'contact':
             onHire();
         }
       },
       itemBuilder: (_) => [
-        _menuItem('skills', 'Skills'),
-        _menuItem('projects', 'Projects'),
+        _menuItem('about', 'About'),
+        _menuItem('services', 'Services'),
+        _menuItem('portfolio', 'Portfolio'),
         _menuItem('experience', 'Experience'),
-        _menuItem('reviews', 'Reviews'),
-        _menuItem('hire', 'Hire Me'),
+        _menuItem('testimonial', 'Testimonial'),
+        _menuItem('contact', 'Contact'),
       ],
     );
   }
@@ -272,6 +285,203 @@ class _MobileMenuButton extends StatelessWidget {
       child: Text(label,
           style: AppTheme.dmMono(
               size: 11, color: AppTheme.white, letterSpacing: 1.0)),
+    );
+  }
+}
+
+// ── ABOUT SECTION ─────────────────────────────────────────────────────────
+
+class _AboutSection extends StatelessWidget {
+  final VoidCallback onHire;
+  const _AboutSection({super.key, required this.onHire});
+
+  @override
+  Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    final isMobile = w < AppTheme.bpMobile;
+    final isDesktop = w >= AppTheme.bpTablet;
+
+    return Container(
+      color: AppTheme.navy,
+      width: double.infinity,
+      child: Stack(
+        children: [
+          Positioned(
+            left: -60,
+            top: 30,
+            child: _CircleDecor(
+                size: isDesktop ? 500 : 350,
+                color: AppTheme.teal,
+                opacity: 0.18),
+          ),
+          Positioned(
+            right: -40,
+            bottom: 20,
+            child: _CircleDecor(
+                size: isDesktop ? 400 : 280,
+                color: AppTheme.gold,
+                opacity: 0.12),
+          ),
+          Padding(
+            padding: _sectionPadding(w),
+            child: _contentBox(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SectionHeader(
+                    label: 'About Me',
+                    title:
+                        'I Can Deliver Results\nThat Exceed Your Expectations',
+                    subtitle: '',
+                  ),
+                  isDesktop
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: _aboutText(),
+                            ),
+                            const SizedBox(width: 60),
+                            Expanded(
+                              flex: 2,
+                              child: _aboutStats(isMobile, onHire),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _aboutText(),
+                            const SizedBox(height: 40),
+                            _aboutStats(isMobile, onHire),
+                          ],
+                        ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _aboutText() {
+    return Text(
+      'With over 4.5 years of professional experience as a Flutter developer in the IT industry, I am deeply passionate and dedicated to delivering exceptional work. My commitment to excellence is evident in every project I undertake.\n\n'
+      'I specialize in building high-performance, AI-enabled mobile and web applications using Flutter, Dart, and Swift. From integrating OpenAI/GPT-powered chatbots and smart recommendation engines to implementing on-device ML with TensorFlow Lite — I bring cutting-edge AI capabilities into production-ready apps.\n\n'
+      'My expertise spans clean architecture, state management, Firebase, and the complete development lifecycle. Whether you need an AI-powered MVP, an intelligent feature added to an existing app, or a dedicated Flutter developer — I bring reliability, clear communication, and future-ready solutions to every engagement.',
+      style: AppTheme.dmSans(size: 15, color: AppTheme.muted, height: 1.85),
+    );
+  }
+
+  Widget _aboutStats(bool isMobile, VoidCallback onHire) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(child: _statBlock('8', '+', 'Projects\nCompleted')),
+            const SizedBox(width: 20),
+            Expanded(child: _statBlock('5', '+', 'Companies\nWorked With')),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            Expanded(child: _statBlock('4.5', '+', 'Years of\nExperience')),
+            const SizedBox(width: 20),
+            Expanded(child: _statBlock('100', '%', 'Client\nSatisfaction')),
+          ],
+        ),
+        const SizedBox(height: 32),
+        SizedBox(
+          width: double.infinity,
+          child: _HireButton(onTap: onHire),
+        ),
+      ],
+    );
+  }
+
+  Widget _statBlock(String value, String suffix, String label) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppTheme.cardBg,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppTheme.borderColor),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: value,
+                  style: AppTheme.playfair(
+                      size: 36, color: AppTheme.teal, weight: FontWeight.w700),
+                ),
+                TextSpan(
+                  text: suffix,
+                  style: AppTheme.playfair(
+                      size: 20, color: AppTheme.gold, weight: FontWeight.w700),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(label,
+              style: AppTheme.dmMono(
+                  size: 10, color: AppTheme.muted, letterSpacing: 0.8)),
+        ],
+      ),
+    );
+  }
+}
+
+class _HireButton extends StatefulWidget {
+  final VoidCallback onTap;
+  const _HireButton({required this.onTap});
+
+  @override
+  State<_HireButton> createState() => _HireButtonState();
+}
+
+class _HireButtonState extends State<_HireButton> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          transform: Matrix4.translationValues(0, _hovered ? -2 : 0, 0),
+          padding: const EdgeInsets.symmetric(vertical: 18),
+          decoration: BoxDecoration(
+            color: _hovered ? AppTheme.tealSoft : AppTheme.teal,
+            borderRadius: BorderRadius.circular(6),
+            boxShadow: _hovered
+                ? [
+                    BoxShadow(
+                      color: AppTheme.teal.withValues(alpha: 0.3),
+                      blurRadius: 20,
+                      offset: const Offset(0, 6),
+                    )
+                  ]
+                : [],
+          ),
+          child: Center(
+            child: Text('Hire Me Now',
+                style: AppTheme.dmSans(
+                    size: 16, weight: FontWeight.w700, color: AppTheme.navy)),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -288,27 +498,39 @@ class _SkillsSection extends StatelessWidget {
     return Container(
       color: AppTheme.navyMid,
       width: double.infinity,
-      padding: _sectionPadding(w),
-      child: _contentBox(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SectionHeader(
-              label: 'Core Expertise',
-              title: 'What I Bring to\nYour Project',
-              subtitle:
-                  'A full-stack Flutter skillset — from architecture planning to App Store submission — across mobile and web platforms.',
+      child: Stack(
+        children: [
+          const Positioned(
+            right: -50,
+            top: 60,
+            child: _CircleDecor(size: 450, color: AppTheme.teal, opacity: 0.15),
+          ),
+          Padding(
+            padding: _sectionPadding(w),
+            child: _contentBox(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SectionHeader(
+                    label: 'Services',
+                    title: 'Available Services\nI Can Work On',
+                    subtitle:
+                        'End-to-end Flutter development services — from initial consultation to App Store deployment and ongoing maintenance.',
+                  ),
+                  _ResponsiveGrid(
+                    mobileColumns: 1,
+                    tabletColumns: 2,
+                    desktopColumns: 3,
+                    spacing: 20,
+                    children: skillCards
+                        .map((c) => SkillCardWidget(card: c))
+                        .toList(),
+                  ),
+                ],
+              ),
             ),
-            _ResponsiveGrid(
-              mobileColumns: 1,
-              tabletColumns: 2,
-              desktopColumns: 3,
-              spacing: 20,
-              children:
-                  skillCards.map((c) => SkillCardWidget(card: c)).toList(),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -326,28 +548,48 @@ class _ProjectsSection extends StatelessWidget {
     return Container(
       color: AppTheme.navy,
       width: double.infinity,
-      padding: _sectionPadding(w),
-      child: _contentBox(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SectionHeader(
-              label: 'Selected Work',
-              title: 'Projects That\nDelivered Results',
-              subtitle:
-                  'A curated selection of client engagements across industries — each built with scalability, performance, and user experience at the forefront.',
+      child: Stack(
+        children: [
+          const Positioned(
+            right: -60,
+            top: 80,
+            child: _CircleDecor(
+                size: 550,
+                color: AppTheme.teal,
+                opacity: 0.15,
+                showRings: true),
+          ),
+          const Positioned(
+            left: -40,
+            bottom: 60,
+            child: _CircleDecor(size: 400, color: AppTheme.gold, opacity: 0.10),
+          ),
+          Padding(
+            padding: _sectionPadding(w),
+            child: _contentBox(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SectionHeader(
+                    label: 'Portfolio',
+                    title: 'Selected Works\n2020 — 2026',
+                    subtitle:
+                        'A curated selection of client projects across industries — each built with scalability, performance, and user experience at the forefront.',
+                  ),
+                  _ResponsiveGrid(
+                    mobileColumns: 1,
+                    tabletColumns: 2,
+                    desktopColumns: 2,
+                    spacing: 24,
+                    children: projects
+                        .map((p) => ProjectCardWidget(project: p))
+                        .toList(),
+                  ),
+                ],
+              ),
             ),
-            _ResponsiveGrid(
-              mobileColumns: 1,
-              tabletColumns: 2,
-              desktopColumns: 2,
-              spacing: 24,
-              children: projects
-                  .map((p) => ProjectCardWidget(project: p))
-                  .toList(),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -365,58 +607,69 @@ class _ExperienceSection extends StatelessWidget {
     return Container(
       color: AppTheme.navyMid,
       width: double.infinity,
-      padding: _sectionPadding(w),
-      child: _contentBox(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SectionHeader(
-              label: 'Career Timeline',
-              title: 'Professional\nExperience',
-              subtitle:
-                  '4.5+ years of progressive growth — from training programs to senior Flutter development across multiple industries.',
-            ),
-            IntrinsicHeight(
-              child: Row(
+      child: Stack(
+        children: [
+          const Positioned(
+            left: -50,
+            top: 80,
+            child: _CircleDecor(size: 450, color: AppTheme.teal, opacity: 0.15),
+          ),
+          Padding(
+            padding: _sectionPadding(w),
+            child: _contentBox(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: 40,
-                    child: Stack(
+                  const SectionHeader(
+                    label: 'Career Timeline',
+                    title: 'Professional\nExperience',
+                    subtitle:
+                        '4.5+ years of progressive growth — from training programs to senior Flutter development across multiple industries.',
+                  ),
+                  IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Positioned(
-                          left: 19,
-                          top: 8,
-                          bottom: 0,
-                          child: Container(
-                            width: 1,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  AppTheme.teal,
-                                  AppTheme.teal.withValues(alpha: 0),
-                                ],
+                        SizedBox(
+                          width: 40,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 19,
+                                top: 8,
+                                bottom: 0,
+                                child: Container(
+                                  width: 1,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        AppTheme.teal,
+                                        AppTheme.teal.withValues(alpha: 0),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: experiences
+                                .map((e) => _TimelineItem(experience: e))
+                                .toList(),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      children: experiences
-                          .map((e) => _TimelineItem(experience: e))
-                          .toList(),
-                    ),
-                  ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -479,8 +732,7 @@ class _TimelineItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(experience.role,
-                    style:
-                        AppTheme.playfair(size: 18, color: AppTheme.white)),
+                    style: AppTheme.playfair(size: 18, color: AppTheme.white)),
                 const SizedBox(height: 4),
                 Text(experience.company,
                     style: AppTheme.dmSans(
@@ -527,28 +779,43 @@ class _TestimonialsSection extends StatelessWidget {
     return Container(
       color: AppTheme.navy,
       width: double.infinity,
-      padding: _sectionPadding(w),
-      child: _contentBox(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SectionHeader(
-              label: 'Client Reviews',
-              title: 'What Clients\nSay',
-              subtitle:
-                  'Feedback from Upwork clients and long-term collaborators.',
+      child: Stack(
+        children: [
+          const Positioned(
+            left: -40,
+            top: 40,
+            child: _CircleDecor(
+                size: 450,
+                color: AppTheme.teal,
+                opacity: 0.15,
+                showRings: true),
+          ),
+          Padding(
+            padding: _sectionPadding(w),
+            child: _contentBox(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SectionHeader(
+                    label: 'Client Reviews',
+                    title: 'What Clients\nSay',
+                    subtitle:
+                        'Feedback from clients and long-term collaborators.',
+                  ),
+                  _ResponsiveGrid(
+                    mobileColumns: 1,
+                    tabletColumns: 2,
+                    desktopColumns: 3,
+                    spacing: 20,
+                    children: testimonials
+                        .map((t) => TestimonialCardWidget(testimonial: t))
+                        .toList(),
+                  ),
+                ],
+              ),
             ),
-            _ResponsiveGrid(
-              mobileColumns: 1,
-              tabletColumns: 2,
-              desktopColumns: 3,
-              spacing: 20,
-              children: testimonials
-                  .map((t) => TestimonialCardWidget(testimonial: t))
-                  .toList(),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -566,87 +833,105 @@ class _ContactSection extends StatelessWidget {
     return Container(
       color: AppTheme.navyMid,
       width: double.infinity,
-      padding: _sectionPadding(w),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 640),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                      width: 50,
-                      height: 1,
-                      color: AppTheme.teal.withValues(alpha: 0.5)),
-                  const SizedBox(width: 12),
-                  Text('GET IN TOUCH',
-                      style: AppTheme.dmMono(
-                          size: 11,
-                          color: AppTheme.teal,
-                          letterSpacing: 2.5)),
-                  const SizedBox(width: 12),
-                  Container(
-                      width: 50,
-                      height: 1,
-                      color: AppTheme.teal.withValues(alpha: 0.5)),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Ready to Build\nSomething Great?',
-                textAlign: TextAlign.center,
-                style: AppTheme.playfair(
-                    size: w >= AppTheme.bpMobile ? 36 : 28, height: 1.15),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                "I'm currently accepting new Flutter projects. Whether you need a full app built from scratch or an existing codebase improved, let's talk.",
-                textAlign: TextAlign.center,
-                style: AppTheme.dmSans(
-                    size: 15, color: AppTheme.muted, height: 1.7),
-              ),
-              const SizedBox(height: 36),
-              Wrap(
-                spacing: 16,
-                runSpacing: 12,
-                alignment: WrapAlignment.center,
-                children: [
-                  _ContactCTAButton(
-                    label: 'Email Me',
-                    onTap: () => launchUrl(
-                        Uri.parse('mailto:mvbhojani007@gmail.com')),
-                  ),
-                  _ContactCTAButton(
-                    label: 'LinkedIn',
-                    onTap: () => launchUrl(Uri.parse(
-                        'https://www.linkedin.com/in/mihir-bhojani-bha1542')),
-                    isSecondary: true,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 44),
-              Container(height: 1, color: AppTheme.borderColor),
-              const SizedBox(height: 36),
-              const Wrap(
-                spacing: 36,
-                runSpacing: 20,
-                alignment: WrapAlignment.center,
-                children: [
-                  _ContactInfoItem(
-                      label: 'Email', value: 'mvbhojani007@gmail.com'),
-                  _ContactInfoItem(
-                      label: 'Phone', value: '+91 97732 55821'),
-                  _ContactInfoItem(
-                      label: 'Timezone', value: 'IST (UTC+5:30)'),
-                  _ContactInfoItem(
-                      label: 'Education',
-                      value: 'BCA · Veer Narmad South Gujarat University'),
-                ],
-              ),
-            ],
+      child: Stack(
+        children: [
+          const Positioned(
+            right: -30,
+            top: -20,
+            child: _CircleDecor(size: 400, color: AppTheme.teal, opacity: 0.16),
           ),
-        ),
+          Padding(
+            padding: _sectionPadding(w),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 640),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            width: 50,
+                            height: 1,
+                            color: AppTheme.teal.withValues(alpha: 0.5)),
+                        const SizedBox(width: 12),
+                        Text('CONTACT',
+                            style: AppTheme.dmMono(
+                                size: 11,
+                                color: AppTheme.teal,
+                                letterSpacing: 2.5)),
+                        const SizedBox(width: 12),
+                        Container(
+                            width: 50,
+                            height: 1,
+                            color: AppTheme.teal.withValues(alpha: 0.5)),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Let's Talk to\nCollaborate",
+                      textAlign: TextAlign.center,
+                      style: AppTheme.playfair(
+                          size: w >= AppTheme.bpMobile ? 36 : 28, height: 1.15),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "I'm available on Upwork for new Flutter projects. Whether you need a full app built from scratch, an existing codebase improved, or ongoing maintenance — let's connect.",
+                      textAlign: TextAlign.center,
+                      style: AppTheme.dmSans(
+                          size: 15, color: AppTheme.muted, height: 1.7),
+                    ),
+                    const SizedBox(height: 36),
+                    Wrap(
+                      spacing: 16,
+                      runSpacing: 12,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        _ContactCTAButton(
+                          label: 'Hire Me on Upwork',
+                          onTap: () => launchUrl(Uri.parse(
+                              'https://www.upwork.com/freelancers/~0189158d71e0960484?mp_source=share')),
+                        ),
+                        _ContactCTAButton(
+                          label: 'Email Me',
+                          onTap: () => launchUrl(
+                              Uri.parse('mailto:mvbhojani007@gmail.com')),
+                          isSecondary: true,
+                        ),
+                        _ContactCTAButton(
+                          label: 'LinkedIn',
+                          onTap: () => launchUrl(Uri.parse(
+                              'https://www.linkedin.com/in/mihir-bhojani-bha1542/')),
+                          isSecondary: true,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 44),
+                    Container(height: 1, color: AppTheme.borderColor),
+                    const SizedBox(height: 36),
+                    const Wrap(
+                      spacing: 36,
+                      runSpacing: 20,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        _ContactInfoItem(
+                            label: 'Email', value: 'mvbhojani007@gmail.com'),
+                        _ContactInfoItem(
+                            label: 'Phone', value: '+91 97732 55821'),
+                        _ContactInfoItem(
+                            label: 'Timezone', value: 'IST (UTC+5:30)'),
+                        _ContactInfoItem(
+                            label: 'Education',
+                            value:
+                                'BCA · Veer Narmad South Gujarat University'),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -764,15 +1049,13 @@ class _Footer extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text('© 2026 Mihir Bhojani · Flutter Developer',
-                      style:
-                          AppTheme.dmMono(size: 10, color: AppTheme.muted)),
+                      style: AppTheme.dmMono(size: 10, color: AppTheme.muted)),
                 ],
               )
             : Row(
                 children: [
                   Text('© 2026 Mihir Bhojani · Flutter Developer',
-                      style:
-                          AppTheme.dmMono(size: 10, color: AppTheme.muted)),
+                      style: AppTheme.dmMono(size: 10, color: AppTheme.muted)),
                   const Spacer(),
                   MouseRegion(
                     cursor: SystemMouseCursors.click,
@@ -790,4 +1073,87 @@ class _Footer extends StatelessWidget {
       ),
     );
   }
+}
+
+// ── BACKGROUND DECORATIONS ───────────────────────────────────────────────
+
+class _CircleDecor extends StatelessWidget {
+  final double size;
+  final Color color;
+  final double opacity;
+  final bool showRings;
+
+  const _CircleDecor({
+    required this.size,
+    required this.color,
+    this.opacity = 0.07,
+    this.showRings = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: showRings
+            ? Stack(
+                children: [
+                  _glowContainer(),
+                  CustomPaint(
+                    size: Size(size, size),
+                    painter:
+                        _RingsPainter(color: color, opacity: opacity * 0.7),
+                  ),
+                ],
+              )
+            : _glowContainer(),
+      ),
+    );
+  }
+
+  Widget _glowContainer() {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(
+          colors: [
+            color.withValues(alpha: opacity),
+            color.withValues(alpha: opacity * 0.6),
+            color.withValues(alpha: opacity * 0.2),
+            Colors.transparent,
+          ],
+          stops: const [0.0, 0.3, 0.6, 1.0],
+        ),
+      ),
+    );
+  }
+}
+
+class _RingsPainter extends CustomPainter {
+  final Color color;
+  final double opacity;
+  _RingsPainter({required this.color, required this.opacity});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final maxR = size.width * 0.42;
+
+    for (var i = 1; i <= 3; i++) {
+      final r = maxR * (0.4 + i * 0.25);
+      final a = (opacity - (i - 1) * 0.02).clamp(0.02, opacity);
+      canvas.drawCircle(
+        center,
+        r,
+        Paint()
+          ..color = color.withValues(alpha: a)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.5,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_RingsPainter old) => false;
 }

@@ -84,29 +84,23 @@ class _HeroSectionState extends State<HeroSection>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _fadeSlide(0, _AvailabilityBadge()),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         _fadeSlide(
           1,
-          Row(
-            children: [
-              Container(width: 36, height: 1, color: AppTheme.teal),
-              const SizedBox(width: 12),
-              Flexible(
-                child: Text('Flutter Developer · 4.5+ Years',
-                    style: AppTheme.dmMono(
-                        size: 11, color: AppTheme.teal, letterSpacing: 1.8)),
-              ),
-            ],
-          ),
+          Text("Hi, I'm",
+              style: AppTheme.dmSans(
+                  size: isMobile ? 16 : 20,
+                  color: AppTheme.muted,
+                  weight: FontWeight.w400)),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 8),
         _fadeSlide(
           2,
           RichText(
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: 'Mihir\n',
+                  text: 'Mihir ',
                   style: AppTheme.playfair(
                       size: nameSize, height: 1.05, color: AppTheme.white),
                 ),
@@ -122,7 +116,7 @@ class _HeroSectionState extends State<HeroSection>
         const SizedBox(height: 14),
         _fadeSlide(
           3,
-          Text('Senior Mobile App Developer',
+          Text('Senior Flutter & AI-Enabled Mobile App Developer',
               style: AppTheme.playfair(
                   size: subtitleSize,
                   weight: FontWeight.w400,
@@ -134,7 +128,7 @@ class _HeroSectionState extends State<HeroSection>
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 540),
             child: Text(
-              'Senior Mobile App Developer with over 4.5 years of experience in designing and maintaining high-performance iOS and Android applications. Skilled in Flutter, Dart, and Swift, with strong expertise in state management, clean architecture, and scalable app solutions.',
+              'Building intelligent, cross-platform mobile & web apps powered by Flutter and AI. From AI chatbots and smart recommendations to production-grade apps — clean architecture, on-time delivery, and future-ready solutions.',
               style: AppTheme.dmSans(
                   size: isMobile ? 14 : 15,
                   color: AppTheme.muted,
@@ -149,8 +143,9 @@ class _HeroSectionState extends State<HeroSection>
             spacing: 16,
             runSpacing: 12,
             children: [
-              _PrimaryButton(label: 'View My Work', onTap: widget.onViewWork),
-              _SecondaryButton(label: "Let's Talk", onTap: widget.onContact),
+              _PrimaryButton(
+                  label: 'Hire Me on Upwork', onTap: widget.onContact),
+              _SecondaryButton(label: 'View My Work', onTap: widget.onViewWork),
             ],
           ),
         ),
@@ -166,7 +161,7 @@ class _HeroSectionState extends State<HeroSection>
               _StatDivider(),
               const StatItem(value: '8', sup: '+', label: 'APPS\nSHIPPED'),
               _StatDivider(),
-              const StatItem(value: '5', sup: '+', label: 'COMPANIES\nWORKED'),
+              const StatItem(value: '3', sup: '+', label: 'AI-POWERED\nAPPS'),
             ],
           ),
         ),
@@ -196,24 +191,35 @@ class _HeroSectionState extends State<HeroSection>
           Positioned(
             right: -100,
             top: -80,
-            child: AnimatedBuilder(
-              animation: _glowAnim,
-              builder: (_, __) => Transform.scale(
-                scale: _glowAnim.value,
-                child: Container(
-                  width: isDesktop ? 600 : 300,
-                  height: isDesktop ? 600 : 300,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        AppTheme.teal.withValues(alpha: 0.12),
-                        Colors.transparent,
-                      ],
+            child: RepaintBoundary(
+              child: AnimatedBuilder(
+                animation: _glowAnim,
+                builder: (_, __) => Transform.scale(
+                  scale: _glowAnim.value,
+                  child: Container(
+                    width: isDesktop ? 600 : 300,
+                    height: isDesktop ? 600 : 300,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          AppTheme.teal.withValues(alpha: 0.12),
+                          Colors.transparent,
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            right: isDesktop ? 0 : -40,
+            top: isDesktop ? 40 : -10,
+            child: SizedBox(
+              width: isDesktop ? 520 : 320,
+              height: isDesktop ? 520 : 320,
+              child: CustomPaint(painter: _OrbitRingsPainter()),
             ),
           ),
           Padding(
@@ -235,12 +241,25 @@ class _HeroSectionState extends State<HeroSection>
                           const SizedBox(width: 40),
                           Expanded(
                             flex: 2,
-                            child: _fadeSlide(0, const _HeroGraphic()),
+                            child: RepaintBoundary(
+                              child: _fadeSlide(0, const _ProfileImage()),
+                            ),
                           ),
                         ],
                       )
-                    : _buildTextContent(
-                        isMobile, isDesktop, nameSize, subtitleSize),
+                    : Column(
+                        children: [
+                          _buildTextContent(
+                              isMobile, isDesktop, nameSize, subtitleSize),
+                          const SizedBox(height: 40),
+                          RepaintBoundary(
+                            child: _fadeSlide(
+                              0,
+                              const _ProfileImage(isMobileLayout: true),
+                            ),
+                          ),
+                        ],
+                      ),
               ),
             ),
           ),
@@ -400,52 +419,169 @@ class _SecondaryButtonState extends State<_SecondaryButton> {
   }
 }
 
-// ── HERO GRAPHIC ─────────────────────────────────────────────────────────
+// ── PROFILE IMAGE ────────────────────────────────────────────────────────
 
-class _HeroGraphic extends StatefulWidget {
-  const _HeroGraphic();
+class _ProfileImage extends StatefulWidget {
+  final bool isMobileLayout;
+  const _ProfileImage({this.isMobileLayout = false});
 
   @override
-  State<_HeroGraphic> createState() => _HeroGraphicState();
+  State<_ProfileImage> createState() => _ProfileImageState();
 }
 
-class _HeroGraphicState extends State<_HeroGraphic>
-    with TickerProviderStateMixin {
-  late AnimationController _orbitCtrl;
-  late AnimationController _pulseCtrl;
-  late Animation<double> _pulseAnim;
+class _ProfileImageState extends State<_ProfileImage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _glowCtrl;
+  late Animation<double> _glowAnim;
 
   @override
   void initState() {
     super.initState();
-    _orbitCtrl =
-        AnimationController(vsync: this, duration: const Duration(seconds: 20))
-          ..repeat();
-    _pulseCtrl =
+    _glowCtrl =
         AnimationController(vsync: this, duration: const Duration(seconds: 3))
           ..repeat(reverse: true);
-    _pulseAnim = Tween<double>(begin: 0.6, end: 1.0).animate(
-      CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut),
+    _glowAnim = Tween<double>(begin: 0.4, end: 1.0).animate(
+      CurvedAnimation(parent: _glowCtrl, curve: Curves.easeInOut),
     );
   }
 
   @override
   void dispose() {
-    _orbitCtrl.dispose();
-    _pulseCtrl.dispose();
+    _glowCtrl.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: Listenable.merge([_orbitCtrl, _pulseAnim]),
-      builder: (_, __) => AspectRatio(
-        aspectRatio: 1,
-        child: CustomPaint(
-          painter: _HeroGraphicPainter(
-            orbitProgress: _orbitCtrl.value,
-            pulse: _pulseAnim.value,
+    final maxH = widget.isMobileLayout ? 360.0 : 480.0;
+    final maxW = widget.isMobileLayout ? 280.0 : 380.0;
+
+    return Center(
+      child: AnimatedBuilder(
+        animation: _glowAnim,
+        builder: (_, __) => Container(
+          constraints: BoxConstraints(maxHeight: maxH, maxWidth: maxW),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.teal.withValues(alpha: 0.15 * _glowAnim.value),
+                blurRadius: 40,
+                spreadRadius: 8,
+              ),
+              BoxShadow(
+                color: AppTheme.gold.withValues(alpha: 0.06 * _glowAnim.value),
+                blurRadius: 60,
+                spreadRadius: 2,
+                offset: const Offset(0, 20),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Stack(
+              children: [
+                AspectRatio(
+                  aspectRatio: 0.75,
+                  child: Image.asset(
+                    'assets/mihir_profile.png',
+                    fit: BoxFit.cover,
+                    alignment: const Alignment(0, -0.6),
+                  ),
+                ),
+                Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: const [0.0, 0.5, 1.0],
+                        colors: [
+                          Colors.transparent,
+                          Colors.transparent,
+                          AppTheme.navy.withValues(alpha: 0.85),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppTheme.teal
+                            .withValues(alpha: 0.2 * _glowAnim.value),
+                        width: 1.5,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 16,
+                  left: 16,
+                  right: 16,
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: AppTheme.teal.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: AppTheme.teal.withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: Text('Flutter',
+                            style: AppTheme.dmSans(
+                                size: 11,
+                                color: AppTheme.teal,
+                                weight: FontWeight.w600)),
+                      ),
+                      const SizedBox(width: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: AppTheme.gold.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: AppTheme.gold.withValues(alpha: 0.25),
+                          ),
+                        ),
+                        child: Text('AI / ML',
+                            style: AppTheme.dmSans(
+                                size: 11,
+                                color: AppTheme.goldLight,
+                                weight: FontWeight.w600)),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: AppTheme.white.withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: AppTheme.white.withValues(alpha: 0.15),
+                          ),
+                        ),
+                        child: Text('4.5+ yrs',
+                            style: AppTheme.dmSans(
+                                size: 11,
+                                color: AppTheme.white,
+                                weight: FontWeight.w500)),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -453,21 +589,9 @@ class _HeroGraphicState extends State<_HeroGraphic>
   }
 }
 
-class _HeroGraphicPainter extends CustomPainter {
-  final double orbitProgress;
-  final double pulse;
+// ── PAINTERS ─────────────────────────────────────────────────────────────
 
-  _HeroGraphicPainter({required this.orbitProgress, required this.pulse});
-
-  static const _techLabels = [
-    'Flutter',
-    'Dart',
-    'Firebase',
-    'BLoC',
-    'REST API',
-    'Swift',
-  ];
-
+class _OrbitRingsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final cx = size.width / 2;
@@ -475,155 +599,34 @@ class _HeroGraphicPainter extends CustomPainter {
     final center = Offset(cx, cy);
     final maxR = size.width * 0.45;
 
-    // Orbit rings
-    for (var i = 0; i < 3; i++) {
-      final r = maxR * (0.5 + i * 0.25);
-      final alpha = 0.06 + i * 0.03;
+    for (var i = 1; i <= 4; i++) {
+      final r = maxR * (0.35 + i * 0.2);
+      final a = (0.14 - (i - 1) * 0.025).clamp(0.04, 0.14);
       canvas.drawCircle(
         center,
         r,
         Paint()
-          ..color = AppTheme.teal.withValues(alpha: alpha * pulse)
+          ..color = AppTheme.teal.withValues(alpha: a)
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 1,
+          ..strokeWidth = 1.5,
       );
     }
 
-    // Central diamond (Flutter-like)
-    final diamondSize = maxR * 0.28 * (0.9 + pulse * 0.1);
-    final diamondPath = Path()
-      ..moveTo(cx, cy - diamondSize)
-      ..lineTo(cx + diamondSize * 0.7, cy)
-      ..lineTo(cx, cy + diamondSize)
-      ..lineTo(cx - diamondSize * 0.7, cy)
-      ..close();
-    canvas.drawPath(
-      diamondPath,
-      Paint()
-        ..color = AppTheme.teal.withValues(alpha: 0.08 * pulse)
-        ..style = PaintingStyle.fill,
-    );
-    canvas.drawPath(
-      diamondPath,
-      Paint()
-        ..color = AppTheme.teal.withValues(alpha: 0.25 * pulse)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.5,
-    );
-
-    // Code brackets "< />" in center
-    _drawText(canvas, '<  />', cx, cy,
-        size: 22, color: AppTheme.teal.withValues(alpha: 0.5 * pulse));
-
-    // Central glow
-    canvas.drawCircle(
-      center,
-      maxR * 0.18,
-      Paint()
-        ..shader = RadialGradient(
-          colors: [
-            AppTheme.teal.withValues(alpha: 0.12 * pulse),
-            Colors.transparent,
-          ],
-        ).createShader(Rect.fromCircle(center: center, radius: maxR * 0.18)),
-    );
-
-    // Orbiting dots on each ring
-    for (var ring = 0; ring < 3; ring++) {
-      final r = maxR * (0.5 + ring * 0.25);
-      final dotCount = 2 + ring;
-      for (var d = 0; d < dotCount; d++) {
-        final angle = (orbitProgress * 2 * pi * (ring.isEven ? 1 : -1)) +
-            (d * 2 * pi / dotCount);
-        final dx = cx + r * cos(angle);
-        final dy = cy + r * sin(angle);
-        final dotR = 3.0 + ring * 0.5;
-
-        canvas.drawCircle(
-          Offset(dx, dy),
-          dotR * pulse,
-          Paint()..color = AppTheme.teal.withValues(alpha: 0.7 * pulse),
-        );
-        canvas.drawCircle(
-          Offset(dx, dy),
-          dotR * 3 * pulse,
-          Paint()..color = AppTheme.teal.withValues(alpha: 0.08 * pulse),
-        );
-      }
-    }
-
-    // Floating tech labels around outer ring
-    for (var i = 0; i < _techLabels.length; i++) {
-      final angle =
-          (i * 2 * pi / _techLabels.length) + (orbitProgress * 2 * pi * 0.15);
-      final r = maxR * (0.85 + 0.08 * sin(orbitProgress * 2 * pi + i));
-      final lx = cx + r * cos(angle);
-      final ly = cy + r * sin(angle);
-
-      final fadeZone = (sin(angle + orbitProgress * pi) + 1) / 2;
-      final labelAlpha = 0.3 + fadeZone * 0.5;
-
-      _drawText(canvas, _techLabels[i], lx, ly,
-          size: 10, color: AppTheme.teal.withValues(alpha: labelAlpha * pulse));
-    }
-
-    // Corner accent dots
-    final accentPositions = [
-      Offset(cx - maxR * 0.35, cy - maxR * 0.35),
-      Offset(cx + maxR * 0.4, cy - maxR * 0.3),
-      Offset(cx - maxR * 0.3, cy + maxR * 0.4),
-      Offset(cx + maxR * 0.35, cy + maxR * 0.35),
-    ];
-    for (var i = 0; i < accentPositions.length; i++) {
-      final p = accentPositions[i];
-      final glow = sin(orbitProgress * 2 * pi * 2 + i * 1.5).abs();
+    final outerR = maxR * 0.95;
+    final dotPaint = Paint()..color = AppTheme.teal.withValues(alpha: 0.25);
+    for (var i = 0; i < 8; i++) {
+      final angle = i * pi * 2 / 8;
       canvas.drawCircle(
-        p,
+        Offset(cx + outerR * cos(angle), cy + outerR * sin(angle)),
         2,
-        Paint()
-          ..color = AppTheme.gold.withValues(alpha: (0.2 + glow * 0.5) * pulse),
+        dotPaint,
       );
     }
-
-    // Connecting lines from center to orbiting dots (subtle)
-    for (var ring = 0; ring < 2; ring++) {
-      final r = maxR * (0.5 + ring * 0.25);
-      final angle = orbitProgress * 2 * pi * (ring.isEven ? 1 : -1);
-      final dx = cx + r * cos(angle);
-      final dy = cy + r * sin(angle);
-      canvas.drawLine(
-        center,
-        Offset(dx, dy),
-        Paint()
-          ..color = AppTheme.teal.withValues(alpha: 0.04 * pulse)
-          ..strokeWidth = 1,
-      );
-    }
-  }
-
-  void _drawText(Canvas canvas, String text, double x, double y,
-      {required double size, required Color color}) {
-    final tp = TextPainter(
-      text: TextSpan(
-        text: text,
-        style: TextStyle(
-          fontFamily: 'DM Mono',
-          fontSize: size,
-          color: color,
-          fontWeight: FontWeight.w500,
-          letterSpacing: size > 15 ? 4 : 1,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout();
-    tp.paint(canvas, Offset(x - tp.width / 2, y - tp.height / 2));
   }
 
   @override
-  bool shouldRepaint(_HeroGraphicPainter old) => true;
+  bool shouldRepaint(_OrbitRingsPainter old) => false;
 }
-
-// ── PAINTERS ─────────────────────────────────────────────────────────────
 
 class _GridPainter extends CustomPainter {
   @override
