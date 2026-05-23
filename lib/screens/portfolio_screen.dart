@@ -368,7 +368,7 @@ class _AboutSection extends StatelessWidget {
 
   Widget _aboutText() {
     return Text(
-      'With over 4.5 years of professional experience as a Flutter developer in the IT industry, I am deeply passionate and dedicated to delivering exceptional work. My commitment to excellence is evident in every project I undertake.\n\n'
+      'With over 6 years of professional experience as a Flutter developer in the IT industry, I am deeply passionate and dedicated to delivering exceptional work. My commitment to excellence is evident in every project I undertake.\n\n'
       'I specialize in building high-performance, AI-enabled mobile and web applications using Flutter, Dart, and Swift. From integrating OpenAI/GPT-powered chatbots and smart recommendation engines to implementing on-device ML with TensorFlow Lite — I bring cutting-edge AI capabilities into production-ready apps.\n\n'
       'My expertise spans clean architecture, state management, Firebase, and the complete development lifecycle. Whether you need an AI-powered MVP, an intelligent feature added to an existing app, or a dedicated Flutter developer — I bring reliability, clear communication, and future-ready solutions to every engagement.',
       style: AppTheme.dmSans(size: 15, color: AppTheme.muted, height: 1.85),
@@ -388,7 +388,7 @@ class _AboutSection extends StatelessWidget {
         const SizedBox(height: 20),
         Row(
           children: [
-            Expanded(child: _statBlock('4.5', '+', 'Years of\nExperience')),
+            Expanded(child: _statBlock('6', '+', 'Years of\nExperience')),
             const SizedBox(width: 20),
             Expanded(child: _statBlock('100', '%', 'Client\nSatisfaction')),
           ],
@@ -624,7 +624,7 @@ class _ExperienceSection extends StatelessWidget {
                     label: 'Career Timeline',
                     title: 'Professional\nExperience',
                     subtitle:
-                        '4.5+ years of progressive growth — from training programs to senior Flutter development across multiple industries.',
+                        '6+ years of progressive growth — from training programs to senior Flutter development across multiple industries.',
                   ),
                   IntrinsicHeight(
                     child: Row(
@@ -876,7 +876,7 @@ class _ContactSection extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      "I'm available on Upwork for new Flutter projects. Whether you need a full app built from scratch, an existing codebase improved, or ongoing maintenance — let's connect.",
+                      "I'm available for new Flutter projects. Whether you need a full app built from scratch, an existing codebase improved, or ongoing maintenance — let's connect.",
                       textAlign: TextAlign.center,
                       style: AppTheme.dmSans(
                           size: 15, color: AppTheme.muted, height: 1.7),
@@ -888,15 +888,9 @@ class _ContactSection extends StatelessWidget {
                       alignment: WrapAlignment.center,
                       children: [
                         _ContactCTAButton(
-                          label: 'Hire Me on Upwork',
-                          onTap: () => launchUrl(Uri.parse(
-                              'https://www.upwork.com/freelancers/~0189158d71e0960484?mp_source=share')),
-                        ),
-                        _ContactCTAButton(
                           label: 'Email Me',
                           onTap: () => launchUrl(
                               Uri.parse('mailto:mvbhojani007@gmail.com')),
-                          isSecondary: true,
                         ),
                         _ContactCTAButton(
                           label: 'LinkedIn',

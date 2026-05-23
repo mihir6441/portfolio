@@ -144,7 +144,7 @@ class _HeroSectionState extends State<HeroSection>
             runSpacing: 12,
             children: [
               _PrimaryButton(
-                  label: 'Hire Me on Upwork', onTap: widget.onContact),
+                  label: 'Contact Me', onTap: widget.onContact),
               _SecondaryButton(label: 'View My Work', onTap: widget.onViewWork),
             ],
           ),
@@ -157,7 +157,7 @@ class _HeroSectionState extends State<HeroSection>
             runSpacing: 20,
             children: [
               const StatItem(
-                  value: '4.5', sup: '+', label: 'YEARS\nEXPERIENCE'),
+                  value: '6', sup: '+', label: 'YEARS\nEXPERIENCE'),
               _StatDivider(),
               const StatItem(value: '8', sup: '+', label: 'APPS\nSHIPPED'),
               _StatDivider(),
@@ -571,7 +571,7 @@ class _ProfileImageState extends State<_ProfileImage>
                             color: AppTheme.white.withValues(alpha: 0.15),
                           ),
                         ),
-                        child: Text('4.5+ yrs',
+                        child: Text('6+ yrs',
                             style: AppTheme.dmSans(
                                 size: 11,
                                 color: AppTheme.white,
